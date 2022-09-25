@@ -137,7 +137,7 @@ class VideoCaptureManager {
             throw error
         }
     }
-    
+
     private func addVideoOutputToSession() throws {
         if session.canAddOutput(videoOutput) {
             session.addOutput(videoOutput)
