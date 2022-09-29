@@ -11,10 +11,15 @@ import Foundation
 /// is composed of 4 bytes length data and NALU data
 class NALUParser {
     
+    /// Data stream received from the client.
+    /// It'll be a seqeunce of NALU so we should pick out NALU from it.
     private var dataStream = Data()
+    
+    /// We should search data stream sequentially to pick out NALU of it.
+    /// This is uesed for searching data stream.
     private var searchIndex = 0
     
-    private lazy var taskQueue = DispatchQueue.init(label: "parser.queue",
+    private lazy var parsingQueue = DispatchQueue.init(label: "parsing.queue",
                                                     qos: .userInteractive)
     
     /// callback when a NALU is seperated from data stream
@@ -22,7 +27,7 @@ class NALUParser {
     
     /// receives NALU stream data and parse it then call 'h264UnitHandling'
     func enqueue(_ data: Data) {
-        taskQueue.async { [self] in
+        parsingQueue.async { [self] in
             dataStream.append(data)
             
             while searchIndex < dataStream.endIndex-3 {

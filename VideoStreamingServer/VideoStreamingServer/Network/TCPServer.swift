@@ -46,10 +46,11 @@ class TCPServer {
         }
         
         listener?.newConnectionHandler = { [unowned self] connection in
-            print("connection establised --> \(connection.endpoint)")
+            print("connection requested --> \(connection.endpoint)")
             
             connection.stateUpdateHandler = { [unowned self] state in
                 if state == .ready {
+                    // connection established
                     recieveData(on: connection)
                 }
             }

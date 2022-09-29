@@ -29,11 +29,5 @@ class ViewController: UIViewController {
             print(error.localizedDescription)
         }
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        layer.frame = view.frame
-    }
 }
 
