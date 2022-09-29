@@ -37,8 +37,8 @@ class H264Encoder: NSObject {
     /// create VTCompressSession with default settings
     func configureCompressSession() throws {
         let error = VTCompressionSessionCreate(allocator: kCFAllocatorDefault,
-                                             width: Int32(1280),
-                                             height: Int32(720),
+                                             width: Int32(720),
+                                             height: Int32(1280),
                                              codecType: kCMVideoCodecType_H264,
                                              encoderSpecification: nil,
                                              imageBufferAttributes: nil,

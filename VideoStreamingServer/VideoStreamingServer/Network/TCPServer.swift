@@ -8,6 +8,9 @@
 import Foundation
 import Network
 
+/// Abstract: TCP server that can listen to port and accept connection,
+/// receive data
+///
 /// Caution: This server can accept only one connection
 class TCPServer {
     
@@ -26,7 +29,8 @@ class TCPServer {
     
     // MARK: - methods
     
-    func start(on port: UInt16) throws {
+    /// start listening on the port specified
+    func start(port: UInt16) throws {
         listener?.cancel()
         
         guard let port = NWEndpoint.Port.init(rawValue: port) else {
@@ -56,7 +60,7 @@ class TCPServer {
         listener?.start(queue: listeningQueue)
     }
     
-    // this method receive data recursively on the connection
+    /// receive data recursively on the connection
     private func recieveData(on connection: NWConnection) {
         if connection.state != .ready {
             return

@@ -12,17 +12,28 @@ class ViewController: UIViewController {
 
     let videoServer = VideoServer()
     
+    let layer = AVSampleBufferDisplayLayer()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let layer = AVSampleBufferDisplayLayer()
         layer.frame = view.frame
         view.layer.addSublayer(layer)
         
-        try? videoServer.start(on: 12005)
-        videoServer.setSampleBufferCallback { sample in
-            layer.enqueue(sample)
+        do {
+            try videoServer.start(on: 12005)
+            videoServer.setSampleBufferCallback { [layer] sample in
+                layer.enqueue(sample)
+            }
+        } catch {
+            print(error.localizedDescription)
         }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        layer.frame = view.frame
     }
 }
 

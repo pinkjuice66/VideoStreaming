@@ -88,6 +88,10 @@ class VideoCaptureManager {
         do {
             try addVideoDeviceInputToSession()
             try addVideoOutputToSession()
+            
+            if let connection = session.connections.first {
+                connection.videoOrientation = .portrait
+            }
         } catch {
             print("error ocurred : \(error.localizedDescription)")
             return

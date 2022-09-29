@@ -19,12 +19,12 @@ struct H264Unit {
     
     private let payload: Data
     
-    // 4 bytes data represents NAL Unit's length
+    /// 4 bytes data represents NAL Unit's length
     private var lengthData: Data?
     
-    // it could be
-    // - pure NALU data(if SPS or PPS)
-    // - 4 bytes length data + NALU data(if not SPS or PPS)
+    /// it could be
+    /// - pure NALU data(if SPS or PPS)
+    /// - 4 bytes length data + NALU data(if not SPS or PPS)
     var data: Data {
         if type == .vcl {
             return lengthData! + payload

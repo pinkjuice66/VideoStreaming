@@ -16,21 +16,17 @@ class VideoServer {
     private let naluParser = NALUParser()
     private let h264Converter = H264Converter()
     
-    // MARK: - init
+    // MARK: - task methods
     
-    init() {
+    func start(on port: UInt16) throws {
+        try server.start(port: port)
+        
         setServerDataHandling()
         setNALUParserHandling()
     }
     
-    // MARK: - task methods
-    
-    func start(on port: UInt16) throws {
-        try server.start(on: port)
-    }
-    
     func setSampleBufferCallback(_ callback: @escaping (CMSampleBuffer) -> Void) {
-        h264Converter.callback = callback
+        h264Converter.sampleBufferCallback = callback
     }
     
     // MARK: - helper methods
@@ -42,7 +38,7 @@ class VideoServer {
     }
     
     private func setNALUParserHandling() {
-        naluParser.naluHandling = { [h264Converter] h264Unit in
+        naluParser.h264UnitHandling = { [h264Converter] h264Unit in
             h264Converter.convert(h264Unit)
         }
     }

@@ -9,6 +9,9 @@ import Foundation
 import AVFoundation
 
 /// Abstract: This object receives H264 Unit and convert it to CMSampleBuffer
+///
+/// This dose not excute decoding operation. So it just converts H264Unit to
+/// 'encoded' CMSampleBuffer
 class H264Converter {
     
     // MARK: - properties
@@ -20,7 +23,7 @@ class H264Converter {
     
     private lazy var convertingQueue = DispatchQueue.init(label: "convertingQueue", qos: .userInteractive)
     
-    var callback: ((CMSampleBuffer) -> Void)?
+    var sampleBufferCallback: ((CMSampleBuffer) -> Void)?
     
     // MARK: - task method
     
@@ -40,7 +43,7 @@ class H264Converter {
                 return
             }
             
-            callback?(sampleBuffer)
+            sampleBufferCallback?(sampleBuffer)
         }
     }
     
