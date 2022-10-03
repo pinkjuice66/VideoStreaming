@@ -21,30 +21,26 @@ class H264Converter {
     
     private var description: CMVideoFormatDescription?
     
-    private lazy var convertingQueue = DispatchQueue.init(label: "convertingQueue", qos: .userInteractive)
-    
     var sampleBufferCallback: ((CMSampleBuffer) -> Void)?
     
     // MARK: - task method
     
     func convert(_ h264Unit: H264Unit) {
-        convertingQueue.async { [self] in
-            if h264Unit.type == .sps || h264Unit.type == .pps {
-                description = nil
-                createDescription(with: h264Unit)
-                return
-            } else {
-                sps = nil
-                pps = nil
-            }
-
-            guard let blockBuffer = createBlockBuffer(with: h264Unit),
-                  let sampleBuffer = createSampleBuffer(with: blockBuffer) else {
-                return
-            }
-            
-            sampleBufferCallback?(sampleBuffer)
+        if h264Unit.type == .sps || h264Unit.type == .pps {
+            description = nil
+            createDescription(with: h264Unit)
+            return
+        } else {
+            sps = nil
+            pps = nil
         }
+
+        guard let blockBuffer = createBlockBuffer(with: h264Unit),
+              let sampleBuffer = createSampleBuffer(with: blockBuffer) else {
+            return
+        }
+        
+        sampleBufferCallback?(sampleBuffer)
     }
     
     // MARK: - helper mehtods
