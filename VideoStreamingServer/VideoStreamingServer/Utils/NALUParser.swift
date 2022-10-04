@@ -27,7 +27,7 @@ class NALUParser {
     
     /// receives NALU stream data and parse it then call 'h264UnitHandling'
     func enqueue(_ data: Data) {
-        parsingQueue.async { [self] in
+        parsingQueue.async { [unowned self] in
             dataStream.append(data)
             
             while searchIndex < dataStream.endIndex-3 {
