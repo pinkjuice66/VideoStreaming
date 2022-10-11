@@ -113,6 +113,14 @@ class H264Encoder: NSObject {
                                                 lengthAtOffsetOut: nil,
                                                 totalLengthOut: &totalLength,
                                                 dataPointerOut: &dataPointer)
+                
+        // Caution :
+        // CMBlockBuffer is possibly non-contiguous.
+        // This means CMBlockBuffer's data could be scattered in memory.
+        // For the simplicity, i assumed that CMBlockBuffer is contiguous in memory here.
+        // But in general, it'd be needed to check if it is non-contiguous by checking
+        // totalLengthOut == atOffset + lengthAtOffsetOut.
+        // more information :  https://developer.apple.com/documentation/coremedia/1489264-cmblockbuffergetdatapointer
         
         guard error == kCMBlockBufferNoErr,
               let dataPointer = dataPointer else { return }
@@ -206,7 +214,6 @@ extension H264Encoder: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput,
                        didOutput sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
-        
         encode(buffer: sampleBuffer)
     }
 }
